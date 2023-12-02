@@ -70,32 +70,46 @@ fn part2(input: String) -> Vec<u32> {
             indivset.push(k);
         };
 
-        for &combo in &indivset[0] {
-            // print!("{},", combo);  3 blue, 4 red, 1 blue, 2 green, 8 green, 6 blue, 20 red, 1 green, 3 red, 6 blue, 6 red, 1 blue, 3 green,0
-            
-            let i = combo.chars().nth(1).unwrap().to_digit(10).unwrap();
-            let j = combo.chars().nth(2).unwrap().to_digit(10);
+        for dices in indivset {
+            for combo in dices {
+                // print!("{},", combo);  3 blue, 4 red, 1 blue, 2 green, 8 green, 6 blue, 20 red, 1 green, 3 red, 6 blue, 6 red, 1 blue, 3 green,0
+                
+                let i = combo.chars().nth(1).unwrap().to_digit(10).unwrap();
+                let j = combo.chars().nth(2).unwrap().to_digit(10);
 
-            let mut x = String::new();
+                let mut x = String::new();
 
-            if let Some(nb) = j { 
-                x = format!("{}{}", i, nb)
-            }
-            let okaaay = x.parse::<u32>();
-            match okaaay {
-                Ok(nb) => {
-                    if combo.contains("red") && nb > color[0].0 {
-                        color[0].0 = nb
+                if let Some(nb) = j { 
+                    x = format!("{}{}", i, nb)
+                }
+                if j.is_none() {
+                    if combo.contains("red") && i > color[0].0 {
+                        color[0].0 = i
                     }
-                    if combo.contains("blue") && nb > color[1].0 {
-                        color[1].0 = nb
+                    if combo.contains("blue") && i > color[1].0 {
+                        color[1].0 = i
 
                     }
-                    if combo.contains("green") && nb > color[2].0 {
-                        color[2].0 = nb
+                    if combo.contains("green") && i > color[2].0 {
+                        color[2].0 = i
                     }
-                },
-                Err(_e) => (),
+                }
+                let okaaay = x.parse::<u32>();
+                match okaaay {
+                    Ok(nb) => {
+                        if combo.contains("red") && nb > color[0].0 {
+                            color[0].0 = nb
+                        }
+                        if combo.contains("blue") && nb > color[1].0 {
+                            color[1].0 = nb
+
+                        }
+                        if combo.contains("green") && nb > color[2].0 {
+                            color[2].0 = nb
+                        }
+                    },
+                    Err(_e) => (),
+                }
             }
 
         }
@@ -108,7 +122,7 @@ fn part2(input: String) -> Vec<u32> {
 
 
 fn main() {
-    let input = fs::read_to_string("input_test").unwrap();
+    let input = fs::read_to_string("input").unwrap();
     let result = part2(input);
     let nb: u32 = result.iter().sum();
     println!("{}", nb);
