@@ -4,13 +4,19 @@ fn main() {
     let symbol = ['$','*','+','-','=','%','@','/','#'];
     let mut bomb = vec![];
     
-    let file = fs::read_to_string("input").unwrap();
+    let file = fs::read_to_string("input_gab").unwrap();
     for (index, line) in file.lines().enumerate() {
-        for &sy in symbol.iter() {
-            if line.contains(sy) && index > 0 {
-                let pos = line.find(sy).unwrap();
-                print!("{sy} at {index}:{pos}  |");
-                bomb.push((index as i32, pos as i32));
+        for c in line.chars().enumerate() {
+            for &sy in symbol.iter() {
+                if c.1 == sy {
+                    bomb.push((index as i32, c.0 as i32));
+                }
+                // if line.contains(sy) {
+                    //     let pos = line.find(sy).unwrap();
+                    //     println!("{sy} at {index}:{pos}");
+                    //     bomb.push((index as i32, pos as i32));
+                // }
+                    
             }
         }
     }
@@ -26,7 +32,9 @@ fn main() {
             }
             if !l.is_ascii_digit() && !number.is_empty() {
                 let nb = number.parse::<usize>().unwrap();
-                pos_nb.push((line_count as i32, (j - number.len()) as i32, j as i32, nb));
+                // println!("j:{}, l:{}",j,l);
+
+                pos_nb.push((line_count as i32, (j - number.len()) as i32, (j - 1) as i32, nb));
                 number = String::new();
             }
         }
@@ -36,10 +44,10 @@ fn main() {
     for (ligne_signe, debut_signe) in bomb {
         for (ligne_chiffre, debut_chiffre, fin_chiffre, leditchiffre) in pos_nb.iter() {
             if ligne_signe == *ligne_chiffre {
-                if debut_signe == debut_chiffre - 1 {
+                if debut_signe == *debut_chiffre - 1 {
                     jspfrr.insert(leditchiffre.to_owned());
                 }
-                if debut_signe == *fin_chiffre {
+                if debut_signe == *fin_chiffre + 1 {
                     jspfrr.insert(leditchiffre.to_owned());
                 }
             }
@@ -51,7 +59,8 @@ fn main() {
             }
         }
     }
+    println!("{jspfrr:?}");
     let su: usize = jspfrr.iter().sum();
-    println!("{:?}", su);
+    println!("final: {:?}", su);
 
 }
