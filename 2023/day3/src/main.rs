@@ -1,7 +1,14 @@
 use std::{collections::HashMap, fs};
 
-fn create_bomb(file: String) -> Vec<(i32, i32)> {
-    let symbol = ['$', '*', '+', '-', '=', '%', '@', '/', '#', '&'];
+fn create_bomb(part_1: bool, file: String) -> Vec<(i32, i32)> {
+
+    // thanks rust i like
+    let symbol = if part_1 {
+        vec!['$', '*', '+', '-', '=', '%', '@', '/', '#', '&']
+    } else {
+        vec!['*']
+    };
+
     let mut arr: Vec<(i32, i32)> = vec![];
 
     for (index, line) in file.lines().enumerate() {
@@ -47,22 +54,29 @@ fn localiser_chiffre(file: String) -> Vec<(i32, i32, i32, usize)> {
 }
 
 fn check_cell(
+    part_1: bool,
     arr: Vec<(i32, i32)>,
     bigtuple: Vec<(i32, i32, i32, usize)>,
 ) -> HashMap<(i32, i32), usize> {
     let mut hash: HashMap<(i32, i32), usize> = HashMap::new();
+    let mut pash: HashMap<(i32, i32), usize> = HashMap::new();
 
     for (ligne_signe, debut_signe) in arr {
+        let mut found = 0;
+        hash.clear();
         for (ligne_chiffre, debut_chiffre, fin_chiffre, leditchiffre) in bigtuple.iter() {
             if ligne_signe == *ligne_chiffre {
                 if debut_signe == *debut_chiffre - 1 {
                     hash.insert((*ligne_chiffre, *fin_chiffre), leditchiffre.to_owned());
+                    found += 1;
                 }
                 if debut_signe == *fin_chiffre + 1 {
                     hash.insert((*ligne_chiffre, *fin_chiffre), leditchiffre.to_owned());
+                    found += 1;
                 }
                 if debut_signe == *debut_chiffre {
                     hash.insert((*ligne_chiffre, *fin_chiffre), leditchiffre.to_owned());
+                    found += 1;
                 }
             }
             if ligne_signe - 1 == *ligne_chiffre
@@ -70,28 +84,47 @@ fn check_cell(
                 && debut_signe <= *fin_chiffre + 1
             {
                 hash.insert((*ligne_chiffre, *fin_chiffre), leditchiffre.to_owned());
+                found += 1;
             }
             if ligne_signe + 1 == *ligne_chiffre
                 && debut_signe >= *debut_chiffre - 1
                 && debut_signe <= *fin_chiffre + 1
             {
                 hash.insert((*ligne_chiffre, *fin_chiffre), leditchiffre.to_owned());
+                found += 1;
+            }
+            println!("{found}: {:?}",hash.values());
+            if found == 2 {
+                let mut calc = vec![];
+                for v in hash.values() {
+                    calc.push(v);
+                }
+                pash.insert((*ligne_chiffre, *fin_chiffre), calc[0] * calc[1]);
+                print!(" LA LA LA ");
+                found = 0;
             }
         }
     }
-    hash
+    
+
+    if part_1 {
+        hash 
+    } else {
+        pash
+    }
 }
 
 fn main() {
     let file_name: &str = "input";
+    let part_1 = false;
 
     let file = fs::read_to_string(file_name).unwrap();
-    let bomb = create_bomb(file.clone());
+    let bomb = create_bomb(part_1, file.clone());
 
     let pos_nb: Vec<(i32, i32, i32, usize)> = localiser_chiffre(file);
 
     // println!("{pos_nb:?}");
-    let hmap = check_cell(bomb, pos_nb);
+    let hmap = check_cell(part_1, bomb, pos_nb);
 
     // println!("{hmap:?}");
     let su: usize = hmap.values().sum::<usize>();
@@ -105,19 +138,20 @@ mod tests {
     #[test]
     fn input_gab() {
         let file_name: &str = "input_gab";
+        let part_1 = false;
 
         let file = fs::read_to_string(file_name).unwrap();
-        let bomb = create_bomb(file.clone());
+        let bomb = create_bomb(part_1, file.clone());
 
         let pos_nb: Vec<(i32, i32, i32, usize)> = localiser_chiffre(file);
 
-        println!("{pos_nb:?}");
-        let hmap = check_cell(bomb, pos_nb);
+        // println!("{pos_nb:?}");
+        let hmap = check_cell(part_1, bomb, pos_nb);
 
-        println!("{hmap:?}");
-        let mut idk: Vec<_> = hmap.values().collect();
-        idk.sort();
-        println!("{:?}", idk);
+        // println!("{hmap:?}");
+        // let mut idk: Vec<_> = hmap.values().collect();
+        // idk.sort();
+        // println!("{:?}", idk);
         let su: usize = hmap.values().sum::<usize>();
         println!("final: {:?}", su);
         assert_eq!(su, 1782)
@@ -125,16 +159,17 @@ mod tests {
     #[test]
     fn input_test() {
         let file_name: &str = "input_test";
+        let part_1 = false;
 
         let file = fs::read_to_string(file_name).unwrap();
-        let bomb = create_bomb(file.clone());
+        let bomb = create_bomb(part_1, file.clone());
 
         let pos_nb: Vec<(i32, i32, i32, usize)> = localiser_chiffre(file);
 
         println!("{pos_nb:?}");
-        let hmap = check_cell(bomb, pos_nb);
+        let hmap = check_cell(part_1, bomb, pos_nb);
 
-        println!("{hmap:?}");
+        println!("hm: {hmap:?}");
         let su: usize = hmap.values().sum::<usize>();
         println!("final: {:?}", su);
         assert_eq!(su, 4361)
@@ -143,14 +178,15 @@ mod tests {
     #[test]
     fn input_more() {
         let file_name: &str = "input_more";
+        let part_1 = false;
 
         let file = fs::read_to_string(file_name).unwrap();
-        let bomb = create_bomb(file.clone());
+        let bomb = create_bomb(part_1, file.clone());
 
         let pos_nb: Vec<(i32, i32, i32, usize)> = localiser_chiffre(file);
 
         // println!("{pos_nb:?}");
-        let hmap = check_cell(bomb, pos_nb);
+        let hmap = check_cell(part_1, bomb, pos_nb);
 
         // println!("{hmap:?}");
         let su: usize = hmap.values().sum::<usize>();
