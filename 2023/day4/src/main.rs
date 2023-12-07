@@ -3,7 +3,7 @@ use std::{fs, collections::HashMap, vec};
 fn main() {
     let file = fs::read_to_string("input").unwrap();
     let mut memory = HashMap::new();
-    let mut _p1 = 0;
+    let mut p1 = 0;
     let mut oricard: Vec<u32> = vec![];
     for line in file.lines() {
         let (card_id, other_line) = line.split_once(':').unwrap();
@@ -26,24 +26,13 @@ fn main() {
             }
         };
 
-        println!("{memory:?}");
-
         if card_point > 1 {
             card_point = 2_u32.pow(card_point - 1); 
         }
         
-        _p1 += card_point;
+        p1 += card_point;
     }
-    // println!("total : {p1}");
-    println!("memory : {:?}", memory.values().sum::<usize>() + oricard.len());
+    println!("p1 : {p1}");
+    println!("p2 : {:?}", memory.values().sum::<usize>() + oricard.len());
 
-}
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn test_gab() {
-        let input = 2;
-        assert_eq!(input, 20117);
-    }
 }
