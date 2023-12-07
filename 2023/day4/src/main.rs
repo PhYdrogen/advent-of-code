@@ -1,7 +1,7 @@
 use std::{fs, collections::HashMap};
 
 fn main() {
-    let file = fs::read_to_string("input_gab").unwrap();
+    let file = fs::read_to_string("input").unwrap();
     let mut memory = HashMap::new();
     let mut _p1 = 0;
     for line in file.lines() {
@@ -10,7 +10,6 @@ fn main() {
         let (winning, mycard) = other_line.split_once('|').unwrap();
         let nb: Vec<u32> = winning.trim().split(' ').filter(|x| !x.is_empty()).map(|c| c[0..c.len()].parse().unwrap()).collect();
         let my_nb: Vec<u32> = mycard.trim().split(' ').filter(|x| !x.is_empty()).map(|c| c[0..c.len()].parse().unwrap()).collect();
-        // println!("{my_nb:?}");
         let mut card_point: u32 = 0;
         
         for leditnombre in my_nb {
@@ -33,21 +32,15 @@ fn main() {
             memory.insert(id, 0);
         }
         println!("{memory:?}");
-        // println!("{card_id}");
-        // println!("{other_line}");
-        // println!("{nb:?}");
-        // println!("cpbefore : {card_point}");
 
         if card_point > 1 {
             card_point = 2_u32.pow(card_point - 1); 
         }
-        // println!("cpafter : {card_point}");
         
         _p1 += card_point;
     }
     // println!("total : {p1}");
-    let ccc:usize = memory.values().sum::<usize>() + memory.len();
-    println!("memory : {ccc:?}");
+    println!("memory : {:?}", memory.values().sum::<usize>() + memory.len());
 
 }
 
