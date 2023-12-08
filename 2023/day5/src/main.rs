@@ -1,3 +1,7 @@
+use rayon::{
+    self,
+    iter::{IntoParallelIterator, IntoParallelRefIterator, ParallelIterator},
+};
 use std::fs;
 
 fn parse(file: String) -> Vec<i64> {
@@ -12,10 +16,10 @@ fn parse(file: String) -> Vec<i64> {
     seeds_arr
 }
 fn part_1(seeds_arr: Vec<i64>, file: String) -> Vec<i64> {
-    let mut toxicseed: (i64, bool);
-    let mut case_arr = vec![];
+    let a = seeds_arr.clone().into_par_iter().for_each(move |s| {
+        let mut toxicseed: (i64, bool) = (0, false);
+        // let mut case_arr = vec![];
 
-    for s in seeds_arr {
         toxicseed = (s, false);
         for line in file.lines() {
             if !line.contains("map:") && !line.contains("seeds:") && !line.is_empty() {
@@ -36,9 +40,13 @@ fn part_1(seeds_arr: Vec<i64>, file: String) -> Vec<i64> {
                 toxicseed.1 = false;
             }
         }
-        case_arr.push(toxicseed.0);
-    }
-    case_arr
+        println!("{}", toxicseed.0);
+        // case_arr.push(toxicseed.0);
+        // toxicseed.0
+    });
+    seeds_arr
+
+    // case_arr
 }
 fn part_2(file: String) -> Vec<i64> {
     let mut seeds_arr: Vec<i64> = vec![];
@@ -63,7 +71,7 @@ fn part_2(file: String) -> Vec<i64> {
     multi_seeds
 }
 fn main() {
-    let filename = "input";
+    let filename = "input_test";
     let a = part_2(fs::read_to_string(filename).unwrap());
     let b = part_1(a, fs::read_to_string(filename).unwrap());
     println!("p1: {}", b.iter().min().unwrap());
