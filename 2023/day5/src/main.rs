@@ -2,8 +2,6 @@ use std::fs;
 
 fn parse(file: String) -> Vec<i64> {
     let mut seeds_arr: Vec<i64> = vec![];
-    let mut toxicseed: (i64, bool);
-    let mut case_arr = vec![];
 
     for line in file.lines() {
         if line.contains("seeds") {
@@ -11,6 +9,12 @@ fn parse(file: String) -> Vec<i64> {
             seeds_arr = k.split(' ').map(|e: &str| e.parse().unwrap()).collect();
         }
     }
+    seeds_arr
+}
+fn part_1(seeds_arr: Vec<i64>, file: String) -> Vec<i64> {
+    let mut toxicseed: (i64, bool);
+    let mut case_arr = vec![];
+
     for s in seeds_arr {
         toxicseed = (s, false);
         for line in file.lines() {
@@ -36,8 +40,31 @@ fn parse(file: String) -> Vec<i64> {
     }
     case_arr
 }
-fn part_1() {}
+fn part_2(file: String) -> Vec<i64> {
+    let mut seeds_arr: Vec<i64> = vec![];
+    let mut multi_seeds: Vec<i64> = vec![];
+
+    for line in file.lines() {
+        if line.contains("seeds") {
+            let k = line.split_once("seeds: ").unwrap().1;
+            seeds_arr = k.split(' ').map(|e: &str| e.parse().unwrap()).collect();
+        }
+    }
+
+    for seed in seeds_arr[0]..seeds_arr[0] + seeds_arr[1] {
+        multi_seeds.push(seed);
+    }
+    println!("f1 done: {} elem", multi_seeds.len());
+
+    for seed in seeds_arr[2]..seeds_arr[2] + seeds_arr[3] {
+        multi_seeds.push(seed);
+    }
+    println!("f1 done: {} elem", multi_seeds.len());
+    multi_seeds
+}
 fn main() {
-    let a = parse(fs::read_to_string("input").unwrap());
-    println!("p1: {}", a.iter().min().unwrap());
+    let filename = "input";
+    let a = part_2(fs::read_to_string(filename).unwrap());
+    let b = part_1(a, fs::read_to_string(filename).unwrap());
+    println!("p1: {}", b.iter().min().unwrap());
 }
