@@ -1,5 +1,5 @@
 use rayon::prelude::*;
-use std::{time::Instant, fs, collections::HashMap, borrow::BorrowMut};
+use std::{time::Instant, fs, collections::HashMap};
 
 fn create_chunk(file: String) -> HashMap<i32, Vec<Vec<i64>>> {
     let mut chunk: HashMap<i32, Vec<Vec<i64>>> = HashMap::new(); // { 0: [[50, 98, 2], [52, 50, 48]] },{ 1: [[0, 15, 37], [37 52 2] ... ] } // chunk[1][1]
@@ -49,14 +49,14 @@ fn _parse(file: String) -> Vec<i64> {
     seeds_arr
 }
 fn part_1(seeds_arr: Vec<(i64, i64)>, chunk: HashMap<i32, Vec<Vec<i64>>>) -> i64 {
-    let mut final_arr: Vec<i64> = vec![];
-
-    seeds_arr.par_iter().for_each(|s| {
-        println!("s: {:?}", s);
-        (s.0..=s.1).into_par_iter().for_each(|l| {
-            final_arr.push(balade(l, chunk.clone()));
+    let final_arr: Vec<i64> = seeds_arr
+        .par_iter()
+        .flat_map(|s| {
+            (s.0..=s.1).into_par_iter().map(|l| {
+                balade(l, chunk.clone())
+            }).collect::<Vec<i64>>()
         })
-    });
+        .collect();
     final_arr.into_iter().min().unwrap()
 }
 fn part_2(file: String) -> Vec<(i64, i64)> {
