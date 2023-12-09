@@ -1,23 +1,40 @@
 use rayon::prelude::*;
-use std::fs;
+use std::{time::Instant, fs, collections::HashMap, borrow::BorrowMut};
 
-fn balade(tseed: &mut (i64,bool), file: String) -> i64 {
+fn create_chunk(file: String) -> HashMap<i32, Vec<Vec<i64>>> {
+    let mut chunk: HashMap<i32, Vec<Vec<i64>>> = HashMap::new(); // { 0: [[50, 98, 2], [52, 50, 48]] },{ 1: [[0, 15, 37], [37 52 2] ... ] } // chunk[1][1]
+    let mut counter = 0;
+    let mut chunk_arr: Vec<Vec<i64>> = vec![];
+
     for line in file.lines() {
         if !line.contains("map:") && !line.contains("seeds:") && !line.is_empty() {
-            let line_arr_num: Vec<i64> =
-                line.split(' ').map(|c: &str| c.parse().unwrap()).collect();
-            if line_arr_num[1] <= tseed.0 && (line_arr_num[1] + line_arr_num[2]) >= tseed.0 && !tseed.1 {
-                let diff = line_arr_num[0] - line_arr_num[1];
-                // print!(" {} ->", tseed.0);
-                tseed.0 += diff;
-                tseed.1 = true;
-                // print!("{} ", tseed.0);
-            }
-        } else {
-            tseed.1 = false;
+            let line_arr_num: Vec<i64> = line.split(' ').map(|c: &str| c.parse().unwrap()).collect();
+            chunk_arr.push(line_arr_num);
+        } else if !chunk_arr.is_empty() {
+            chunk.insert(counter, chunk_arr.clone());
+            chunk_arr = vec![];
+            counter += 1;
         }
     }
-    tseed.0
+    chunk
+}
+
+
+fn balade(tseed: i64, chunk: HashMap<i32, Vec<Vec<i64>>>) -> i64 {
+    let mut par_seed = tseed;
+    for c in 0..chunk.len() {
+        let chunk_arr = chunk.get(&(c as i32)).unwrap();
+        for line_arr_num in chunk_arr.iter() {
+            if line_arr_num[1] <= par_seed && (line_arr_num[1] + line_arr_num[2]) >= par_seed {
+                let diff = line_arr_num[0] - line_arr_num[1];
+                // print!(" {} ->", tseed);
+                par_seed += diff;
+                // println!("{} ", tseed);
+                break;
+            }
+        }
+    }
+    par_seed
 }
 
 fn _parse(file: String) -> Vec<i64> {
@@ -31,12 +48,13 @@ fn _parse(file: String) -> Vec<i64> {
     }
     seeds_arr
 }
-fn part_1(mut seeds_arr: Vec<(i64, i64)>, file: String) -> i64 {
+fn part_1(seeds_arr: Vec<(i64, i64)>, chunk: HashMap<i32, Vec<Vec<i64>>>) -> i64 {
     let mut final_arr: Vec<i64> = vec![];
 
-    seeds_arr.iter_mut().for_each(|s| {
-        (s.0..=s.1).for_each(|l| {
-            final_arr.push(balade(&mut (l, false), file.clone()));
+    seeds_arr.par_iter().for_each(|s| {
+        println!("s: {:?}", s);
+        (s.0..=s.1).into_par_iter().for_each(|l| {
+            final_arr.push(balade(l, chunk.clone()));
         })
     });
     final_arr.into_iter().min().unwrap()
@@ -75,13 +93,15 @@ fn part_2(file: String) -> Vec<(i64, i64)> {
             }
         }
     }
-    multi_seeds
     // panic!("stop! {:?}", multi_seeds);
+    multi_seeds
 
 }
 fn main() {
-    let filename = "input_test";
+    let filename = "input_gab";
+    let chunk = create_chunk(fs::read_to_string(filename).unwrap());
+    let n = Instant::now();
     let a = part_2(fs::read_to_string(filename).unwrap());
-    let b = part_1(a, fs::read_to_string(filename).unwrap());
-    println!("p1: {}", b);
+    let b = part_1(a, chunk);
+    println!("p1: {}, time: {}", b, n.elapsed().as_secs());
 }
