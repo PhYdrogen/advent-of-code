@@ -1,2 +1,7 @@
 target/
 .vscode
+Cargo.toml
+Cargo.lock
+input_test
+input_gab
+input
