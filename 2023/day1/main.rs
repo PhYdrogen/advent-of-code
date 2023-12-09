@@ -1,9 +1,7 @@
 use std::fs;
 
 fn main() {
-    //read file
     let content = fs::read_to_string("input_test").expect("Erreur");
-    //convert string to arr of string
     let arr: Vec<&str> = content.split_terminator('\n').collect();
     let mut secret: usize = 0;
     for elem in arr {
