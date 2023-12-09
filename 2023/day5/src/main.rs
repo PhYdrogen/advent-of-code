@@ -8,10 +8,10 @@ fn balade(tseed: &mut (i64,bool), file: String) -> i64 {
                 line.split(' ').map(|c: &str| c.parse().unwrap()).collect();
             if line_arr_num[1] <= tseed.0 && (line_arr_num[1] + line_arr_num[2]) >= tseed.0 && !tseed.1 {
                 let diff = line_arr_num[0] - line_arr_num[1];
-                // print!(" {} ->", toxicseed.0);
+                print!(" {} ->", tseed.0);
                 tseed.0 += diff;
                 tseed.1 = true;
-                // print!("{} ", toxicseed.0);
+                print!("{} ", tseed.0);
             }
         } else {
             tseed.1 = false;
@@ -31,24 +31,14 @@ fn parse(file: String) -> Vec<i64> {
     }
     seeds_arr
 }
-fn part_1(mut seeds_arr: Vec<i64>, mut arr: Vec<i64>, file: String) -> Vec<i64> {
-    let mut v1 = seeds_arr.split_off(seeds_arr.len()/2);
+fn part_1(mut seeds_arr: Vec<i64>, file: String) -> Vec<i64> {
 
-    seeds_arr.into_iter().for_each(|s| {
-        let mut toxicseed: (i64, bool) = (s, false);
-
-        let r = balade(&mut toxicseed, file.clone());
-
-        arr.push(r);
+    seeds_arr.par_iter_mut().for_each(|s| {
+        let mut toxicseed: (i64, bool) = (*s, false);
+        *s = balade(&mut toxicseed, file.clone());
 
     });
-    v1.par_iter_mut().for_each(|val| {
-        let mut tseed: (i64, bool) = (*val, false);
-        *val = balade(&mut tseed, file.clone());
-        
-    });
-
-    arr
+    seeds_arr
 }
 fn part_2(file: String) -> Vec<i64> {
     let mut seeds_arr: Vec<i64> = vec![];
@@ -76,6 +66,6 @@ fn main() {
     let filename = "input";
     let arr: Vec<i64> = vec![];
     let a = part_2(fs::read_to_string(filename).unwrap());
-    let b = part_1(a, arr, fs::read_to_string(filename).unwrap());
-    println!("p1: {}", b.iter().min().unwrap());
+    let b = part_1(a, fs::read_to_string(filename).unwrap());
+    println!("p1: {}", b.into_iter().min().unwrap());
 }
