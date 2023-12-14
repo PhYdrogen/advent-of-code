@@ -33,8 +33,8 @@ impl PartialEq for Hand {
 }
 impl Eq for Hand {}
 
-#[aoc(day7, part2)]
-fn part_2(file: &str) -> Option<i32> {
+#[aoc(day7, part1)]
+fn part_1(file: &str) -> Option<i32> {
     let cards: HashMap<char,i32> = HashMap::from([
         ('A',13),
         ('K',12),
@@ -138,4 +138,20 @@ fn part_2(file: &str) -> Option<i32> {
     println!("{}", result);
     Some(result)
     // println!("cards: {:?}, power: {}, kind:{}", h1.card, h1.power, h1.kind);
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const EXMPL: &str = "32T3K 765
+T55J5 684
+KK677 28
+KTJJT 220
+QQQJA 483";
+
+    #[test]
+    fn test_part_1() {
+        assert_eq!(part_1(EXMPL), Some(35))
+    }
 }
