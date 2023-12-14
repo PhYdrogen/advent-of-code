@@ -1,5 +1,10 @@
 use std::{collections::HashMap, fs, iter, time::Instant};
-fn main() {
+
+pub fn part_1() {
+
+}
+
+pub fn part_2() {
     let now = Instant::now();
     let file = fs::read_to_string("input").unwrap();
     let (instruction, file) = file.split_once('\n').unwrap();
@@ -37,7 +42,7 @@ fn main() {
             let mut check = 0;
             if ins == 'R' {
                 for cursor in &mut cursor_arr {
-                    if cursor.1.ends_with("Z") {
+                    if cursor.1.ends_with('Z') {
                         check += 1;
                         if check == c_len {
                             found = true;
@@ -49,7 +54,7 @@ fn main() {
                 steps += 1;
             } else {
                 for cursor in &mut cursor_arr {
-                    if cursor.0.ends_with("Z") {
+                    if cursor.0.ends_with('Z') {
                         check += 1;
                         if check == c_len {
                             found = true;
@@ -73,4 +78,19 @@ fn main() {
         steps,
         now.elapsed().as_micros()
     );
+}
+
+#[cfg(test)]
+mod test {
+    use crate::day8::*;
+
+    #[test]
+    fn test_part_1() {
+
+    }
+    // Part2 is not optimize for brute force (normal way)
+    #[test]
+    fn test_part_2() {
+        part_2()
+    }
 }

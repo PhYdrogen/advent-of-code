@@ -1,9 +1,10 @@
-use std::fs;
+use aoc_runner_derive::aoc;
 
-fn main() {
-    let content = fs::read_to_string("input_test").expect("Erreur");
-    let arr: Vec<&str> = content.split_terminator('\n').collect();
-    let mut secret: usize = 0;
+
+#[aoc(day1, part2)]
+fn part_2(file: &str) -> Option<i32> {
+    let arr: Vec<&str> = file.split_terminator('\n').collect();
+    let mut secret: i32 = 0;
     for elem in arr {
         let mut sanitize = vec![];
         let mut construction = String::from(elem);
@@ -81,7 +82,6 @@ fn main() {
                 }
                 construction = format!("{}9{}", &construction[..nine+1], &construction[nine+1..]);
             }
-            println!("\nori : {}\n constr : {}", elem, construction);
 
         }
 
@@ -90,15 +90,46 @@ fn main() {
                 sanitize.push(char);
             }
         }
-        print!("{sanitize:?} ");
-        let calc: usize;
+        let calc: i32;
         if sanitize.len() > 1 {
             let k = format!("{}{}", sanitize.first().unwrap().to_string(), sanitize.last().unwrap().to_string());
-            calc = k.parse::<usize>().unwrap();
+            calc = k.parse::<i32>().unwrap();
         }
         else if sanitize.len() == 1 {
             let k = format!("{}{}", sanitize.first().unwrap().to_string(), sanitize.first().unwrap().to_string());
-            calc = k.parse::<usize>().unwrap();
+            calc = k.parse::<i32>().unwrap();
+        } else {
+            calc = 0;
+        }
+        secret += calc;
+    }
+    println!("The secret count is {secret}");
+    Some(secret)
+}
+
+#[aoc(day1, part1)]
+fn part_1(file: &str) -> Option<i32> {
+    //read file
+    // let content = fs::read_to_string("input").expect("Erreur");
+    //convert string to arr of string
+    let arr: Vec<&str> = file.split_terminator('\n').collect();
+    let mut secret: i32 = 0;
+    for elem in arr {
+        let mut sanitize = vec![];
+        for char in elem.chars() {
+            if char.is_ascii_digit() {
+                sanitize.push(char);
+            }
+        }
+        print!("{sanitize:?} ");
+        let calc: i32;
+        if sanitize.len() > 1 {
+            let k = format!("{}{}", sanitize.first().unwrap().to_string(), sanitize.last().unwrap().to_string());
+            calc = k.parse::<i32>().unwrap();
+        }
+        else if sanitize.len() == 1 {
+            let k = format!("{}{}", sanitize.first().unwrap().to_string(), sanitize.first().unwrap().to_string());
+            calc = k.parse::<i32>().unwrap();
         } else {
             calc = 0;
         }
@@ -106,4 +137,30 @@ fn main() {
         secret += calc;
     }
     println!("The secret count is {secret}");
+    Some(secret)
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    const EXMPL_P1:&str = "1abc2
+pqr3stu8vwx
+a1b2c3d4e5f
+treb7uchet";
+    #[test]
+    fn test_part_1() {
+        assert_eq!(part_1(EXMPL_P1), Some(53974))
+    }
+
+    const EXMPL_P2:&str = "two1nine
+eightwothree
+abcone2threexyz
+xtwone3four
+4nineeightseven2
+zoneight234
+7pqrstsixteen";
+    #[test]
+    fn test_part_2() {
+        assert_eq!(part_2(EXMPL_P2), Some(52840))
+    }
 }

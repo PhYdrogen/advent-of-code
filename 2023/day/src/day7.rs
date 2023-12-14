@@ -1,4 +1,5 @@
-use std::{fs, collections::HashMap, time::Instant, cmp::Ordering};
+use std::{collections::HashMap, time::Instant, cmp::Ordering};
+use aoc_runner_derive::aoc;
 
 #[derive(Debug, Clone)]
 struct Hand {
@@ -32,7 +33,8 @@ impl PartialEq for Hand {
 }
 impl Eq for Hand {}
 
-fn main() {
+#[aoc(day7, part2)]
+fn part_2(file: &str) -> Option<i32> {
     let cards: HashMap<char,i32> = HashMap::from([
         ('A',13),
         ('K',12),
@@ -49,7 +51,6 @@ fn main() {
         ('2',1),
     ]);
     let now = Instant::now();
-    let file = fs::read_to_string("input").unwrap();
     let mut arr: Vec<(&str, &str)> = vec![];
     let mut arr_of_card: Vec<Hand> = vec![];
     for line in file.lines() {
@@ -135,5 +136,6 @@ fn main() {
 
     // println!("{:#?}", copy_arr);
     println!("{}", result);
+    Some(result)
     // println!("cards: {:?}, power: {}, kind:{}", h1.card, h1.power, h1.kind);
 }
