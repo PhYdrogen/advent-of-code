@@ -1,26 +1,26 @@
 use aoc_runner_derive::aoc;
-use rayon::iter::IndexedParallelIterator;
 
 #[aoc(day9, part1)]
 fn part_1(file: &str) -> Option<i32> {
+    let mut ye = vec![];
 
     for arr in file_parser(file) {
         walker(arr, 0);
     }
-
-    None
+    Some(ye.iter().sum())
 }
 fn walker(arr: Vec<i32>, cpt: i32) -> i32 {
     let mut v = vec![];
 
+    print!("{:?}", arr);
     if arr.iter().sum::<i32>() == 0 {
-        return *arr.last().unwrap();
+        return arr.last().unwrap().clone();
     }
 
-    for idx in (0..arr.len() - 1).step_by(2) {
-        v.push(arr[idx] - arr[idx+1])
+    for idx in 0..arr.len() - 1 {
+        v.push(arr[idx+1] - arr[idx])
     }
-    println!("recur !");
+    println!("recur ! cpt: {}", cpt);
     walker(v, cpt) + cpt
 }
 
