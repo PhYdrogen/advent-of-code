@@ -47,9 +47,8 @@ fn part_1(file: &str) -> Option<i32> {
     Some(steps)
 }
 
-pub fn part_2() {
+pub fn part_2(file: &str) -> Option<usize> {
     let now = Instant::now();
-    let file = fs::read_to_string("input").unwrap();
     let (instruction, file) = file.split_once('\n').unwrap();
     let mut map = HashMap::new();
     for line in file.lines() {
@@ -121,6 +120,7 @@ pub fn part_2() {
         steps,
         now.elapsed().as_micros()
     );
+    Some(steps)
 }
 
 #[cfg(test)]
@@ -155,7 +155,7 @@ XXX = (XXX, XXX)";
     // Part2 is not optimize for brute force (normal way)
     #[test]
     fn test_part_2() {
-        assert_eq!(part_1(EXMPL_P2), Some(6));
+        assert_eq!(part_2(EXMPL_P2), Some(6));
 
     }
 }
