@@ -9,15 +9,15 @@ You don't need a computer science background to participate - just a little prog
 
 | Day   | AoC link    | My solution  |
 |:-----:|:-----------:|:------------:|
-| 1     | [Trebutchet](https://adventofcode.com/2023/day/1) | [d1](https://github.com/PhYdrogen/advent-of-code/blob/master/2023/day/src/day1.rs) |
-| 2     | [Cube Conundrum](https://adventofcode.com/2023/day/2) | [d1](https://github.com/PhYdrogen/advent-of-code/blob/master/2023/day/src/day2.rs) |
-| 3     | [Gear Ratios](https://adventofcode.com/2023/day/3) | [d1](https://github.com/PhYdrogen/advent-of-code/blob/master/2023/day/src/day3.rs) |
-| 4     | [Scratchcards](https://adventofcode.com/2023/day/4) | [d1](https://github.com/PhYdrogen/advent-of-code/blob/master/2023/day/src/day4.rs) |
-| 5     | [If You Give A Seed A Fertilizer](https://adventofcode.com/2023/day/5) | [d1](https://github.com/PhYdrogen/advent-of-code/blob/master/2023/day/src/day5.rs) |
-| 6     | [Wait For It](https://adventofcode.com/2023/day/6) | [d1](https://github.com/PhYdrogen/advent-of-code/blob/master/2023/day/src/day6.rs) |
-| 7     | [Camel Cards](https://adventofcode.com/2023/day/7) | [d1](https://github.com/PhYdrogen/advent-of-code/blob/master/2023/day/src/day7.rs) |
-| 8     | [Haunted Wasteland](https://adventofcode.com/2023/day/8) | [d1](https://github.com/PhYdrogen/advent-of-code/blob/master/2023/day/src/day8.rs) |
-| 9     | [Mirage Maintenance](https://adventofcode.com/2023/day/9) | [d1](https://github.com/PhYdrogen/advent-of-code/blob/master/2023/day/src/day9.rs) |
+| 1     | [Trebutchet](https://adventofcode.com/2023/day/1) | [link](https://github.com/PhYdrogen/advent-of-code/blob/master/2023/day/src/day1.rs) |
+| 2     | [Cube Conundrum](https://adventofcode.com/2023/day/2) | [link](https://github.com/PhYdrogen/advent-of-code/blob/master/2023/day/src/day2.rs) |
+| 3     | [Gear Ratios](https://adventofcode.com/2023/day/3) | [link](https://github.com/PhYdrogen/advent-of-code/blob/master/2023/day/src/day3.rs) |
+| 4     | [Scratchcards](https://adventofcode.com/2023/day/4) | [link](https://github.com/PhYdrogen/advent-of-code/blob/master/2023/day/src/day4.rs) |
+| 5     | [If You Give A Seed A Fertilizer](https://adventofcode.com/2023/day/5) | [link](https://github.com/PhYdrogen/advent-of-code/blob/master/2023/day/src/day5.rs) |
+| 6     | [Wait For It](https://adventofcode.com/2023/day/6) | [link](https://github.com/PhYdrogen/advent-of-code/blob/master/2023/day/src/day6.rs) |
+| 7     | [Camel Cards](https://adventofcode.com/2023/day/7) | [link](https://github.com/PhYdrogen/advent-of-code/blob/master/2023/day/src/day7.rs) |
+| 8     | [Haunted Wasteland](https://adventofcode.com/2023/day/8) | [link](https://github.com/PhYdrogen/advent-of-code/blob/master/2023/day/src/day8.rs) |
+| 9     | [Mirage Maintenance](https://adventofcode.com/2023/day/9) | [link](https://github.com/PhYdrogen/advent-of-code/blob/master/2023/day/src/day9.rs) |
 
 
 ## If you are using rust you can try my solutions
