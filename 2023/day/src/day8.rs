@@ -1,5 +1,5 @@
-use std::{collections::HashMap, fs, iter, time::Instant};
 use aoc_runner_derive::aoc;
+use std::{collections::HashMap, iter, time::Instant};
 
 #[aoc(day8, part1)]
 fn part_1(file: &str) -> Option<i32> {
@@ -156,6 +156,5 @@ XXX = (XXX, XXX)";
     #[test]
     fn test_part_2() {
         assert_eq!(part_2(EXMPL_P2), Some(6));
-
     }
 }
